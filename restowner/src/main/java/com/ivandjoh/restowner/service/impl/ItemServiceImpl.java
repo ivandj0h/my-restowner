@@ -79,7 +79,11 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ResponseEntity<Item> getItemById(Long id) {
         Optional<Item> item = repository.findById(id);
-        return ResponseEntity.ok(item.get());
+        return item
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity
+                        .notFound()
+                        .build());
     }
 
 
